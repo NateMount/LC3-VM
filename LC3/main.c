@@ -107,5 +107,31 @@ uint16_t check_key()
 // [MAIN]
 int main(int argc, const char* argv[]){
 
+    if (argc < 2){
+        printf("lc3 [image-file] ...\n");
+        exit(2);
+    }
+
+    for (int j = 1; j < argc; ++j){
+        if (!read_image(argv[j])){
+            printf("Failed to load image: %s\n", argv[j]);
+            exit(1);
+        }
+    }
+
+    // Setting initial condition flag
+    reg[R_COND] = FL_ZRO;
+
+    enum { PC_START = 0x3000 };
+    reg[R_PC] = PC_START;
+
+    int running = 1;
+    while (running){
+        uint16_t instr = mem_read(reg[R_PC]++);
+        uint16_t opcode = instr >> 12;
+
+        switch (opcode){}
+    }
+
     return 0;
 }
