@@ -2,6 +2,7 @@
 // Includes 
 #include <stdio.h>
 #include <stdint.h>
+#include <signal.h>
 /* unix only */
 #include <stdlib.h>
 #include <unistd.h>
@@ -104,8 +105,15 @@ uint16_t check_key()
     return select(1, &readfds, NULL, NULL, &timeout) != 0;
 }
 
+void handle_interrupt(int signal){
+    restore_input_buffering();
+    printf("\n");
+    exit(-2);
+}
+
 // [MAIN]
 int main(int argc, const char* argv[]){
+
 
     if (argc < 2){
         printf("lc3 [image-file] ...\n");
@@ -118,6 +126,9 @@ int main(int argc, const char* argv[]){
             exit(1);
         }
     }
+
+    signal(SIGINT, handle_interrupt);
+    disable_input_buffering();
 
     // Setting initial condition flag
     reg[R_COND] = FL_ZRO;
@@ -132,6 +143,6 @@ int main(int argc, const char* argv[]){
 
         switch (opcode){}
     }
-
+    restore_input_buffering();
     return 0;
 }
