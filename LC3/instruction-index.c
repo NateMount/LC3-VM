@@ -117,4 +117,26 @@ void op_store_reg(uint16_t instr){
     mem_write(reg[r1] + offset, reg[r0]);
 }
 
-void op_trap(uint16_t instr);
+void op_trap(uint16_t instr){
+    reg[R_R7] = reg[R_PC];
+    switch (instr & 0xFF){
+        case TRAP_GETC:
+            
+            break;
+        case TRAP_OUT:
+            
+            break;
+        case TRAP_PUTS:
+            
+            break;
+        case TRAP_IN:
+            
+            break;
+        case TRAP_PUTSP:
+            
+            break;
+        case TRAP_HALT:
+            
+            break;
+    }
+}
