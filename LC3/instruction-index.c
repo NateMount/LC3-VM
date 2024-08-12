@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 // Opcode: Add
 void op_add(uint16_t instr){
@@ -133,6 +134,10 @@ void op_store_reg(uint16_t instr){
 
 // TRAP CODE FUNCT IMPL
 
+void trap_getc(){
+    reg[R_R0] = (uint16_t) getchar();
+}
+
 void trap_puts(){
     uint16_t* c = memory + reg[R_R0];
     while (*c){
@@ -180,13 +185,13 @@ void op_trap(uint16_t instr){
     reg[R_R7] = reg[R_PC];
     switch (instr & 0xFF){
         case TRAP_GETC:
-            trap_puts();
+            trap_getc();
             break;
         case TRAP_OUT:
             trap_out();
             break;
         case TRAP_PUTS:
-            trap_in();
+            trap_puts();
             break;
         case TRAP_IN:
             trap_in();
