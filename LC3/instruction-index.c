@@ -104,7 +104,11 @@ void op_store(uint16_t instr){
     mem_write(reg[R_PC] + pc_offset, reg[r0]);
 }
 
-void op_store_indr(uint16_t instr);
+void op_store_indr(uint16_t instr){
+    uint16_t r0 = get_r0;
+    uint16_t pc_offset = get_pc_offset;
+    mem_write(mem_read(reg[R_PC] + pc_offset), reg[r0]);
+}
 
 void op_store_reg(uint16_t instr);
 
