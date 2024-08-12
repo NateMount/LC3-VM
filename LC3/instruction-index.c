@@ -83,7 +83,13 @@ void op_load_indr(uint16_t instr){
     update_flags(r0);
 }
 
-void op_load_reg(uint16_t instr);
+void op_load_reg(uint16_t instr){
+    uint16_t r0 = get_r0;
+    uint16_t r1 = get_r1;
+    uint16_t offset = get_offset;
+    reg[r0] = mem_read(reg[r1] + offset);
+    update_flags(r0);
+}
 
 void op_load_effect_addr(uint16_t instr);
 
