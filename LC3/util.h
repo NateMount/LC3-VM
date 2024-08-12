@@ -20,9 +20,11 @@ enum{
 };
 
 void update_flags(uint16_t r);
-uint16_t sign_extend(uint16_t x, int bit_count);
 
 void mem_write(uint16_t addr, uint16_t val);
 uint16_t mem_read(uint16_t addr);
+
+uint16_t sign_extend(uint16_t x, int bit_count);
+uint16_t swap16(uint16_t x);
 
 #endif
