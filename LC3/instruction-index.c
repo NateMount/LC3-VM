@@ -110,6 +110,11 @@ void op_store_indr(uint16_t instr){
     mem_write(mem_read(reg[R_PC] + pc_offset), reg[r0]);
 }
 
-void op_store_reg(uint16_t instr);
+void op_store_reg(uint16_t instr){
+    uint16_t r0 = get_r0;
+    uint16_t r1 = get_r1;
+    uint16_t offset = get_offset;
+    mem_write(reg[r1] + offset, reg[r0]);
+}
 
 void op_trap(uint16_t instr);
