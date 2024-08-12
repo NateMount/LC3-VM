@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
+// Opcode: Add
 void op_add(uint16_t instr){
     uint16_t r0 = get_r0;
     uint16_t r1 = get_r1;
@@ -21,6 +22,7 @@ void op_add(uint16_t instr){
     update_flags(r0);
 }
 
+// Opcode: And
 void op_and(uint16_t instr){
     uint16_t r0 = get_r0;
     uint16_t r1 = get_r1;
@@ -37,6 +39,7 @@ void op_and(uint16_t instr){
     update_flags(r0);
 }
 
+// Opcode: Not
 void op_not(uint16_t instr){
     uint16_t r0 = get_r0;
     uint16_t r1 = get_r1;
@@ -45,6 +48,7 @@ void op_not(uint16_t instr){
     update_flags(r0);
 }
 
+// Opcode: Branch
 void op_branch(uint16_t instr){
     uint16_t pc_offset = get_pc_offset;
     uint16_t cond_flag = get_r0;
@@ -53,11 +57,13 @@ void op_branch(uint16_t instr){
     }
 }
 
+// Opcode: Jump
 void op_jump(uint16_t instr){
     uint16_t r1 = get_r1;
     reg[R_PC] = reg[r1];
 }
 
+// Opcode: Jump Register
 void op_jump_reg(uint16_t instr){
     uint16_t long_flag = (instr >> 11) & 1;
     reg[R_R7] = reg[R_PC];
@@ -70,6 +76,7 @@ void op_jump_reg(uint16_t instr){
     }
 }
 
+// Opcode: Load
 void op_load(uint16_t instr){
     uint16_t r0 = get_r0;
     uint16_t pc_offset = get_pc_offset;
@@ -77,6 +84,7 @@ void op_load(uint16_t instr){
     update_flags(r0);
 }
 
+// Opcode: Load Indirect
 void op_load_indr(uint16_t instr){
     uint16_t r0 = get_r0;
     uint16_t pc_offset = get_pc_offset;
@@ -84,6 +92,7 @@ void op_load_indr(uint16_t instr){
     update_flags(r0);
 }
 
+// Opcode: Load Register
 void op_load_reg(uint16_t instr){
     uint16_t r0 = get_r0;
     uint16_t r1 = get_r1;
@@ -92,6 +101,7 @@ void op_load_reg(uint16_t instr){
     update_flags(r0);
 }
 
+// Opcode: Load Effective Address
 void op_load_effect_addr(uint16_t instr){
     uint16_t r0 = get_r0;
     uint16_t pc_offset = get_pc_offset;
@@ -99,18 +109,21 @@ void op_load_effect_addr(uint16_t instr){
     update_flags(r0);
 }
 
+// Opcode: Store
 void op_store(uint16_t instr){
     uint16_t r0 = get_r0;
     uint16_t pc_offset = get_pc_offset;
     mem_write(reg[R_PC] + pc_offset, reg[r0]);
 }
 
+// Opcode: Store Indirect
 void op_store_indr(uint16_t instr){
     uint16_t r0 = get_r0;
     uint16_t pc_offset = get_pc_offset;
     mem_write(mem_read(reg[R_PC] + pc_offset), reg[r0]);
 }
 
+// Opcode: Store Register
 void op_store_reg(uint16_t instr){
     uint16_t r0 = get_r0;
     uint16_t r1 = get_r1;
@@ -161,8 +174,8 @@ void trap_halt(){
     exit(0);
 }
 
-// TRAP OPCODE
-
+// Opcode: Trap
+// Handles: Getc, Out, Puts, In, Putsp, Halt
 void op_trap(uint16_t instr){
     reg[R_R7] = reg[R_PC];
     switch (instr & 0xFF){
