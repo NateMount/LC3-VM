@@ -3,6 +3,7 @@
 #include "core.h"
 
 #include <stdint.h>
+#include <stdio.h>
 
 void op_add(uint16_t instr){
     uint16_t r0 = get_r0;
@@ -117,26 +118,71 @@ void op_store_reg(uint16_t instr){
     mem_write(reg[r1] + offset, reg[r0]);
 }
 
+// TRAP CODE FUNCT IMPL
+
+void trap_puts(){
+    uint16_t* c = memory + reg[R_R0];
+    while (*c){
+        putc((char)*c, stdout);
+        ++c;
+    }
+    fflush(stdout);
+}
+
+void trap_out(){
+    putc((char)reg[R_R0], stdout);
+    fflush(stdout);
+}
+
+void trap_in(){
+    printf("Enter a character: ");
+    char c = getchar();
+    putc(c, stdout);
+    fflush(stdout);
+    reg[R_R0] = (uint16_t)c;
+    update_flags(R_R0);
+}
+
+void trap_putsp(){
+    uint16_t* c = memory + reg[R_R0];
+    while (*c){
+        char ch1 = (*c) & 0xFF;
+        putc(ch1, stdout);
+        char ch2 = (*c) >> 8;
+        if (ch2) putc(ch2, stdout);
+        ++c;
+    }
+    fflush(stdout);
+}
+
+void trap_halt(){
+    puts("HALT");
+    fflush(stdout);
+    exit(0);
+}
+
+// TRAP OPCODE
+
 void op_trap(uint16_t instr){
     reg[R_R7] = reg[R_PC];
     switch (instr & 0xFF){
         case TRAP_GETC:
-            
+            trap_puts();
             break;
         case TRAP_OUT:
-            
+            trap_out();
             break;
         case TRAP_PUTS:
-            
+            trap_in();
             break;
         case TRAP_IN:
-            
+            trap_in();
             break;
         case TRAP_PUTSP:
-            
+            trap_putsp();
             break;
         case TRAP_HALT:
-            
+            trap_halt();
             break;
     }
 }
