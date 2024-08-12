@@ -47,7 +47,7 @@ enum {
     OP_TRAP
 };
 
-uint16_t memory[MEM_MAX];
-uint16_t reg[REG_COUNT];
+extern uint16_t memory[MEM_MAX];
+extern uint16_t reg[REG_COUNT];
 
 #endif
