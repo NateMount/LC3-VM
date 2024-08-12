@@ -2,23 +2,15 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <signal.h>
-/* unix only */
 #include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <sys/termios.h>
-#include <sys/mman.h>
 
 #include "core.h"
 #include "util.h"
 #include "instruction-index.h"
 #include "input-buffering.h"
+#include "image-manager.h"
 
-
-
-// [MAIN]
+// [::MAIN::]
 int main(int argc, const char* argv[]){
 
 
@@ -46,7 +38,6 @@ int main(int argc, const char* argv[]){
     uint16_t instr;
     uint16_t opcode;
 
-    int running = 1;
     while (1){
         instr = mem_read(reg[R_PC]++);
         opcode = instr >> 12;
